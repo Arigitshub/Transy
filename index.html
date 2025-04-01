@@ -1,283 +1,513 @@
 <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Transcription Fun Time</title>
-      <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polished Transcription</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-        :root {
-          --primary-color: #6a11cb;
-          --secondary-color: #2575fc;
-          --background-color: #f4f7f6;
-          --text-color: #333;
-          --card-background: #ffffff;
-          --button-hover: #4a0a9e;
-          --error-color: #e74c3c;
-          --success-color: #2ecc71;
-          --border-radius: 8px;
-          --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
+    :root {
+      --primary-color: #6a11cb;
+      --secondary-color: #2575fc;
+      --background-color: #f8f9fa;
+      --text-color: #343a40;
+      --card-background: #ffffff;
+      --button-hover: #5a0ca3;
+      --error-color: #dc3545;
+      --success-color: #198754;
+      --info-color: #0dcaf0;
+      --border-radius: 12px;
+      --box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
 
-        * {
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-          font-family: 'Poppins', sans-serif;
-          background-color: var(--background-color);
-          color: var(--text-color);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100vh;
-          padding: 20px;
-          line-height: 1.6;
-        }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* Align to top for longer content */
+      min-height: 100vh;
+      padding: 30px 15px;
+      line-height: 1.7;
+    }
 
-        .container {
-          background: var(--card-background);
-          padding: 30px 40px;
-          border-radius: var(--border-radius);
-          box-shadow: var(--box-shadow);
-          text-align: center;
-          max-width: 600px;
-          width: 100%;
-        }
+    .container {
+      background: var(--card-background);
+      padding: 35px 45px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      text-align: center;
+      max-width: 700px;
+      width: 100%;
+    }
 
-        h1 {
-          background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          margin-bottom: 15px;
-          font-weight: 600;
-        }
+    h1 {
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      font-weight: 600;
+      font-size: 2.2rem;
+    }
 
-        p {
-          margin-bottom: 25px;
-          color: #555;
-          font-size: 0.95rem;
-        }
+    .subtitle {
+      margin-bottom: 30px;
+      color: #6c757d;
+      font-size: 1rem;
+    }
 
-        textarea {
-          width: 100%;
-          height: 200px;
-          padding: 15px;
-          border: 1px solid #ddd;
-          border-radius: var(--border-radius);
-          margin-bottom: 20px;
-          font-family: inherit;
-          font-size: 1rem;
-          resize: vertical;
-          background-color: #f9f9f9;
-          color: var(--text-color);
-        }
+    .textarea-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
 
-        textarea:focus {
-          outline: none;
-          border-color: var(--primary-color);
-          box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.2);
-        }
+    textarea {
+      width: 100%;
+      height: 250px;
+      padding: 18px;
+      border: 1px solid #ced4da;
+      border-radius: var(--border-radius);
+      font-family: inherit;
+      font-size: 1rem;
+      resize: vertical;
+      background-color: #fdfdff;
+      color: var(--text-color);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        .controls {
-          display: flex;
-          justify-content: center;
-          gap: 15px;
-          margin-bottom: 20px;
-        }
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.15);
+    }
 
-        button {
-          padding: 12px 25px;
-          border: none;
-          border-radius: var(--border-radius);
-          background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-          color: white;
-          font-size: 1rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: background 0.3s ease, transform 0.1s ease;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+    .text-actions {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 8px;
+    }
 
-        button:hover {
-          background: linear-gradient(45deg, var(--button-hover), var(--primary-color));
-          transform: translateY(-2px);
-        }
+    .text-actions button {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid #e0e0e0;
+      color: #555;
+      padding: 5px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
 
-        button:active {
-          transform: translateY(0);
-        }
+    .text-actions button:hover {
+      background: #f0f0f0;
+      color: #333;
+    }
 
-        button:disabled {
-          background: #ccc;
-          cursor: not-allowed;
-          transform: none;
-          box-shadow: none;
-        }
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 25px;
+      flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    }
 
-        #status {
-          margin-top: 15px;
-          font-weight: 600;
-          min-height: 20px; /* Reserve space */
-        }
+    .control-button {
+      padding: 12px 28px;
+      border: none;
+      border-radius: var(--border-radius);
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.1s ease, box-shadow 0.2s ease;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-        .status-listening {
-          color: var(--success-color);
-        }
+    .control-button i {
+      font-size: 1.1em; /* Slightly larger icon */
+    }
 
-        .status-error {
-          color: var(--error-color);
-        }
+    .control-button:hover {
+      background: linear-gradient(45deg, var(--button-hover), var(--primary-color));
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+    }
 
-        .status-idle {
-          color: #888;
-        }
+    .control-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-        /* Responsive Design */
-        @media (max-width: 600px) {
-          .container {
-            padding: 20px;
-          }
-          h1 {
-            font-size: 1.8rem;
-          }
-          .controls {
-            flex-direction: column;
-          }
-          button {
-            width: 100%;
-          }
-          textarea {
-            height: 150px;
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <h1>🎙️ Transcription Fun Time!</h1>
-        <p>Click "Start Listening" and speak clearly. Your words will appear below!</p>
+    .control-button:disabled {
+      background: #adb5bd;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      opacity: 0.7;
+    }
 
-        <textarea id="transcriptionOutput" placeholder="Your transcribed text will appear here..."></textarea>
+    #status {
+      margin-top: 20px;
+      font-weight: 500;
+      min-height: 24px; /* Reserve space */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      padding: 8px 15px;
+      border-radius: var(--border-radius);
+      background-color: #e9ecef;
+      color: #495057;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-        <div class="controls">
-          <button id="startButton">Start Listening</button>
-          <button id="stopButton" disabled>Stop Listening</button>
-        </div>
+    #status i {
+      font-size: 1.1em;
+    }
 
-        <div id="status" class="status-idle">Status: Idle</div>
+    .status-listening {
+      color: var(--success-color);
+      background-color: #d1e7dd;
+    }
+    .status-listening .mic-icon {
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    .status-error {
+      color: var(--error-color);
+      background-color: #f8d7da;
+    }
+
+    .status-processing {
+      color: var(--info-color);
+      background-color: #cff4fc;
+    }
+
+    .status-idle {
+      color: #6c757d;
+      background-color: #e9ecef;
+    }
+
+    .status-stopped {
+        color: #6c757d;
+        background-color: #e9ecef;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 25px 30px;
+      }
+      h1 {
+        font-size: 1.9rem;
+      }
+      textarea {
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 480px) {
+       .container {
+        padding: 20px 15px;
+      }
+      h1 {
+        font-size: 1.7rem;
+      }
+      .subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+      }
+      .controls {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .control-button {
+        width: 100%;
+        justify-content: center; /* Center icon and text */
+      }
+      textarea {
+        height: 180px;
+      }
+       #status {
+         font-size: 0.9rem;
+         text-align: left;
+         justify-content: flex-start;
+       }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><i class="fa-solid fa-microphone-lines"></i> Live Transcription</h1>
+    <p class="subtitle">Click "Start Listening" and speak clearly. Your words will appear below.</p>
+
+    <div class="textarea-container">
+      <textarea id="transcriptionOutput" placeholder="Your transcribed text will appear here..."></textarea>
+      <div class="text-actions">
+        <button id="copyButton" title="Copy to Clipboard"><i class="fa-regular fa-copy"></i> Copy</button>
+        <button id="clearButton" title="Clear Text"><i class="fa-solid fa-eraser"></i> Clear</button>
       </div>
+    </div>
 
-      <script>
-        const startButton = document.getElementById('startButton');
-        const stopButton = document.getElementById('stopButton');
-        const transcriptionOutput = document.getElementById('transcriptionOutput');
-        const statusDiv = document.getElementById('status');
+    <div class="controls">
+      <button id="startButton" class="control-button"><i class="fa-solid fa-play"></i> Start Listening</button>
+      <button id="stopButton" class="control-button" disabled><i class="fa-solid fa-stop"></i> Stop Listening</button>
+    </div>
 
-        // Check for browser support
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        let recognition;
+    <div id="status" class="status-idle">
+      <i class="fa-solid fa-info-circle"></i>
+      <span id="statusText">Status: Idle</span>
+    </div>
+    <div id="errorDisplay" style="color: var(--error-color); margin-top: 10px; font-size: 0.9rem; min-height: 18px;"></div>
 
-        if (SpeechRecognition) {
-          recognition = new SpeechRecognition();
-          recognition.continuous = true; // Keep listening even after pauses
-          recognition.interimResults = true; // Show results as they come in
-          recognition.lang = 'en-US'; // Set language
+  </div>
 
-          let finalTranscript = '';
-          let isListening = false;
+  <script>
+    // --- DOM Elements ---
+    const startButton = document.getElementById('startButton');
+    const stopButton = document.getElementById('stopButton');
+    const copyButton = document.getElementById('copyButton');
+    const clearButton = document.getElementById('clearButton');
+    const transcriptionOutput = document.getElementById('transcriptionOutput');
+    const statusDiv = document.getElementById('status');
+    const statusText = document.getElementById('statusText');
+    const errorDisplay = document.getElementById('errorDisplay');
 
-          recognition.onstart = () => {
-            isListening = true;
-            statusDiv.textContent = 'Status: Listening...';
-            statusDiv.className = 'status-listening';
-            startButton.disabled = true;
-            stopButton.disabled = false;
-            console.log('Speech recognition started');
-          };
+    // --- State ---
+    let recognition;
+    let isListening = false;
+    let finalTranscript = '';
+    let ignoreOnEnd = false; // Flag to manage unexpected 'onend' events
 
-          recognition.onresult = (event) => {
-            let interimTranscript = '';
-            for (let i = event.resultIndex; i < event.results.length; ++i) {
-              if (event.results[i].isFinal) {
-                finalTranscript += event.results[i][0].transcript + ' ';
-              } else {
-                interimTranscript += event.results[i][0].transcript;
-              }
-            }
-            transcriptionOutput.value = finalTranscript + interimTranscript;
-            // Optional: Auto-scroll textarea
-            // transcriptionOutput.scrollTop = transcriptionOutput.scrollHeight;
-          };
+    // --- Initialization ---
+    function initializeSpeechRecognition() {
+      window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        updateStatus('error', 'Web Speech API not supported in this browser. Try Chrome or Edge.', 'fa-triangle-exclamation');
+        disableControls();
+        transcriptionOutput.placeholder = 'Sorry, your browser does not support speech recognition.';
+        return false;
+      }
 
-          recognition.onerror = (event) => {
-            console.error('Speech recognition error:', event.error);
-            let errorMessage = 'An error occurred: ' + event.error;
-            if (event.error === 'no-speech') {
-              errorMessage = 'No speech detected. Please try again.';
-            } else if (event.error === 'audio-capture') {
-              errorMessage = 'Audio capture failed. Ensure microphone is enabled.';
-            } else if (event.error === 'not-allowed') {
-              errorMessage = 'Permission denied. Please allow microphone access.';
-            }
-            statusDiv.textContent = `Status: Error - ${errorMessage}`;
-            statusDiv.className = 'status-error';
-            stopRecognition(); // Ensure state is reset on error
-          };
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
 
-          recognition.onend = () => {
-            if (isListening) { // If ended unexpectedly while supposed to be listening
-              console.log('Speech recognition ended unexpectedly, restarting...');
-              // You might want to automatically restart or just update status
-              // For now, just update status and buttons if it wasn't stopped manually
-              // recognition.start(); // Uncomment to auto-restart (can be annoying)
-               stopRecognition(); // Reset state if it ends unexpectedly
-            } else {
-               console.log('Speech recognition stopped.');
-            }
-          };
+      // --- Event Handlers ---
+      recognition.onstart = handleRecognitionStart;
+      recognition.onresult = handleRecognitionResult;
+      recognition.onerror = handleRecognitionError;
+      recognition.onend = handleRecognitionEnd;
 
-          const startRecognition = () => {
-            if (!isListening) {
-              finalTranscript = transcriptionOutput.value ? transcriptionOutput.value.trim() + ' ' : ''; // Keep existing text
-              try {
-                recognition.start();
-              } catch (e) {
-                 console.error("Error starting recognition:", e);
-                 statusDiv.textContent = 'Status: Error starting - ' + e.message;
-                 statusDiv.className = 'status-error';
-                 startButton.disabled = false;
-                 stopButton.disabled = true;
-              }
-            }
-          };
+      return true;
+    }
 
-          const stopRecognition = () => {
-            if (isListening) {
-              recognition.stop();
-              isListening = false;
-              statusDiv.textContent = 'Status: Stopped';
-              statusDiv.className = 'status-idle';
-              startButton.disabled = false;
-              stopButton.disabled = true;
-            }
-          };
+    // --- Speech Recognition Event Handlers ---
+    function handleRecognitionStart() {
+      isListening = true;
+      updateStatus('listening', 'Listening...', 'fa-microphone mic-icon');
+      startButton.disabled = true;
+      stopButton.disabled = false;
+      errorDisplay.textContent = ''; // Clear previous errors
+      console.log('Speech recognition started');
+    }
 
-          startButton.addEventListener('click', startRecognition);
-          stopButton.addEventListener('click', stopRecognition);
+    function handleRecognitionResult(event) {
+      let interimTranscript = '';
+      finalTranscript = ''; // Reset final transcript for recalculation based on current value + new results
+      const currentText = transcriptionOutput.value.substring(0, transcriptionOutput.value.lastIndexOf(interimTranscript)).trim();
+       if (currentText.length > 0) {
+         finalTranscript = currentText + ' ';
+       }
 
+
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript.trim() + ' ';
         } else {
-          // Handle browsers that don't support the API
-          statusDiv.textContent = 'Status: Error - Web Speech API not supported in this browser.';
-          statusDiv.className = 'status-error';
-          startButton.disabled = true;
-          stopButton.disabled = true;
-          transcriptionOutput.placeholder = 'Sorry, your browser does not support speech recognition.';
-          alert('Web Speech API is not supported in this browser. Please try Chrome or Edge.');
+          interimTranscript += event.results[i][0].transcript;
         }
-      </script>
-    </body>
-    </html>
+      }
+
+      // Prevent excessive spaces
+      finalTranscript = finalTranscript.replace(/\s\s+/g, ' ').trim();
+
+      transcriptionOutput.value = finalTranscript + (interimTranscript ? ' ' + interimTranscript : '');
+      // Optional: Auto-scroll
+      // transcriptionOutput.scrollTop = transcriptionOutput.scrollHeight;
+    }
+
+    function handleRecognitionError(event) {
+      console.error('Speech recognition error:', event.error, event.message);
+      let errorMessage = event.message || event.error; // Prefer message if available
+      let icon = 'fa-circle-exclamation';
+
+      if (event.error === 'no-speech') {
+        errorMessage = 'No speech detected. Microphone might be muted.';
+        ignoreOnEnd = true; // Prevent immediate restart if no speech
+      } else if (event.error === 'audio-capture') {
+        errorMessage = 'Audio capture failed. Check microphone connection/permissions.';
+      } else if (event.error === 'not-allowed') {
+        errorMessage = 'Microphone permission denied. Please allow access.';
+        disableControls(); // Can't proceed without permission
+      } else if (event.error === 'network') {
+          errorMessage = 'Network error during recognition. Check connection.';
+      } else if (event.error === 'aborted') {
+          errorMessage = 'Recognition aborted.';
+          ignoreOnEnd = true; // Usually happens when stop() is called
+      }
+
+      updateStatus('error', `Error: ${errorMessage}`, icon);
+      displayError(`Detailed error: ${event.error}`); // Show technical error below status
+      stopRecognition(true); // Force stop UI update on error
+    }
+
+    function handleRecognitionEnd() {
+      console.log('Speech recognition ended.');
+      // Only reset state if it wasn't manually stopped or if ignoreOnEnd flag isn't set
+      if (isListening && !ignoreOnEnd) {
+        console.log('Recognition ended unexpectedly. Ready to restart.');
+        // Optionally auto-restart here, but can be intrusive.
+        // For now, just reset the state to allow manual restart.
+         stopRecognition(true); // Update UI to stopped state
+         updateStatus('stopped', 'Stopped unexpectedly. Ready to start.', 'fa-circle-stop');
+      } else if (!isListening) {
+         // This is the expected case after calling stop()
+         updateStatus('stopped', 'Status: Stopped', 'fa-circle-stop');
+      }
+      // Reset ignore flag
+      ignoreOnEnd = false;
+    }
+
+    // --- Control Functions ---
+    function startRecognition() {
+      if (!recognition) {
+        displayError("Recognition not initialized.");
+        return;
+      }
+      if (!isListening) {
+        // Keep existing text, add a space if needed
+        const currentText = transcriptionOutput.value.trim();
+        finalTranscript = currentText ? currentText + ' ' : '';
+        transcriptionOutput.value = finalTranscript; // Update textarea immediately
+
+        try {
+          ignoreOnEnd = false; // Reset flag before starting
+          recognition.start();
+          updateStatus('processing', 'Starting...', 'fa-spinner fa-spin'); // Initial status
+        } catch (e) {
+          console.error("Error starting recognition:", e);
+          handleRecognitionError({ error: 'start-failed', message: e.message });
+        }
+      }
+    }
+
+    function stopRecognition(calledFromError = false) {
+      if (recognition && isListening) {
+        ignoreOnEnd = true; // Set flag to indicate manual stop
+        recognition.stop();
+      }
+      isListening = false;
+      // Don't change status if called from error, error handler does it
+      if (!calledFromError) {
+          updateStatus('stopped', 'Status: Stopped', 'fa-circle-stop');
+      }
+      startButton.disabled = false;
+      stopButton.disabled = true;
+    }
+
+    function copyToClipboard() {
+      if (!transcriptionOutput.value) {
+        displayError("Nothing to copy!");
+        setTimeout(clearError, 2000);
+        return;
+      }
+      navigator.clipboard.writeText(transcriptionOutput.value)
+        .then(() => {
+          // Visual feedback (optional)
+          copyButton.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+          setTimeout(() => {
+            copyButton.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+          }, 1500);
+        })
+        .catch(err => {
+          console.error('Failed to copy text: ', err);
+          displayError("Failed to copy text.");
+          setTimeout(clearError, 2000);
+        });
+    }
+
+    function clearText() {
+      finalTranscript = '';
+      transcriptionOutput.value = '';
+      clearError(); // Clear any previous errors
+    }
+
+    // --- UI Update Functions ---
+    function updateStatus(type, message, iconClass) {
+      statusDiv.className = `status-${type}`; // Update class for styling
+      statusText.textContent = message;
+      // Update icon
+      const iconElement = statusDiv.querySelector('i');
+      if (iconElement) {
+        iconElement.className = `fa-solid ${iconClass}`; // Update icon class
+      }
+    }
+
+    function displayError(message) {
+        errorDisplay.textContent = message;
+    }
+
+    function clearError() {
+        errorDisplay.textContent = '';
+    }
+
+    function disableControls() {
+      startButton.disabled = true;
+      stopButton.disabled = true;
+      copyButton.disabled = true;
+      clearButton.disabled = true;
+    }
+
+    // --- Event Listeners ---
+    startButton.addEventListener('click', startRecognition);
+    stopButton.addEventListener('click', () => stopRecognition());
+    copyButton.addEventListener('click', copyToClipboard);
+    clearButton.addEventListener('click', clearText);
+
+    // --- Initial Setup ---
+    if (!initializeSpeechRecognition()) {
+      // Initialization failed (API not supported)
+      console.error("Speech Recognition API not supported or initialization failed.");
+    } else {
+       updateStatus('idle', 'Status: Idle', 'fa-info-circle');
+    }
+
+  </script>
+</body>
+</html>
