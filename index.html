@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Transcription Fun Time</title>
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+          --primary-color: #6a11cb;
+          --secondary-color: #2575fc;
+          --background-color: #f4f7f6;
+          --text-color: #333;
+          --card-background: #ffffff;
+          --button-hover: #4a0a9e;
+          --error-color: #e74c3c;
+          --success-color: #2ecc71;
+          --border-radius: 8px;
+          --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        body {
+          font-family: 'Poppins', sans-serif;
+          background-color: var(--background-color);
+          color: var(--text-color);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          padding: 20px;
+          line-height: 1.6;
+        }
+
+        .container {
+          background: var(--card-background);
+          padding: 30px 40px;
+          border-radius: var(--border-radius);
+          box-shadow: var(--box-shadow);
+          text-align: center;
+          max-width: 600px;
+          width: 100%;
+        }
+
+        h1 {
+          background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-bottom: 15px;
+          font-weight: 600;
+        }
+
+        p {
+          margin-bottom: 25px;
+          color: #555;
+          font-size: 0.95rem;
+        }
+
+        textarea {
+          width: 100%;
+          height: 200px;
+          padding: 15px;
+          border: 1px solid #ddd;
+          border-radius: var(--border-radius);
+          margin-bottom: 20px;
+          font-family: inherit;
+          font-size: 1rem;
+          resize: vertical;
+          background-color: #f9f9f9;
+          color: var(--text-color);
+        }
+
+        textarea:focus {
+          outline: none;
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.2);
+        }
+
+        .controls {
+          display: flex;
+          justify-content: center;
+          gap: 15px;
+          margin-bottom: 20px;
+        }
+
+        button {
+          padding: 12px 25px;
+          border: none;
+          border-radius: var(--border-radius);
+          background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+          color: white;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.3s ease, transform 0.1s ease;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+          background: linear-gradient(45deg, var(--button-hover), var(--primary-color));
+          transform: translateY(-2px);
+        }
+
+        button:active {
+          transform: translateY(0);
+        }
+
+        button:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+          transform: none;
+          box-shadow: none;
+        }
+
+        #status {
+          margin-top: 15px;
+          font-weight: 600;
+          min-height: 20px; /* Reserve space */
+        }
+
+        .status-listening {
+          color: var(--success-color);
+        }
+
+        .status-error {
+          color: var(--error-color);
+        }
+
+        .status-idle {
+          color: #888;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+          .container {
+            padding: 20px;
+          }
+          h1 {
+            font-size: 1.8rem;
+          }
+          .controls {
+            flex-direction: column;
+          }
+          button {
+            width: 100%;
+          }
+          textarea {
+            height: 150px;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>🎙️ Transcription Fun Time!</h1>
+        <p>Click "Start Listening" and speak clearly. Your words will appear below!</p>
+
+        <textarea id="transcriptionOutput" placeholder="Your transcribed text will appear here..."></textarea>
+
+        <div class="controls">
+          <button id="startButton">Start Listening</button>
+          <button id="stopButton" disabled>Stop Listening</button>
+        </div>
+
+        <div id="status" class="status-idle">Status: Idle</div>
+      </div>
+
+      <script>
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const transcriptionOutput = document.getElementById('transcriptionOutput');
+        const statusDiv = document.getElementById('status');
+
+        // Check for browser support
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+
+        if (SpeechRecognition) {
+          recognition = new SpeechRecognition();
+          recognition.continuous = true; // Keep listening even after pauses
+          recognition.interimResults = true; // Show results as they come in
+          recognition.lang = 'en-US'; // Set language
+
+          let finalTranscript = '';
+          let isListening = false;
+
+          recognition.onstart = () => {
+            isListening = true;
+            statusDiv.textContent = 'Status: Listening...';
+            statusDiv.className = 'status-listening';
+            startButton.disabled = true;
+            stopButton.disabled = false;
+            console.log('Speech recognition started');
+          };
+
+          recognition.onresult = (event) => {
+            let interimTranscript = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+              if (event.results[i].isFinal) {
+                finalTranscript += event.results[i][0].transcript + ' ';
+              } else {
+                interimTranscript += event.results[i][0].transcript;
+              }
+            }
+            transcriptionOutput.value = finalTranscript + interimTranscript;
+            // Optional: Auto-scroll textarea
+            // transcriptionOutput.scrollTop = transcriptionOutput.scrollHeight;
+          };
+
+          recognition.onerror = (event) => {
+            console.error('Speech recognition error:', event.error);
+            let errorMessage = 'An error occurred: ' + event.error;
+            if (event.error === 'no-speech') {
+              errorMessage = 'No speech detected. Please try again.';
+            } else if (event.error === 'audio-capture') {
+              errorMessage = 'Audio capture failed. Ensure microphone is enabled.';
+            } else if (event.error === 'not-allowed') {
+              errorMessage = 'Permission denied. Please allow microphone access.';
+            }
+            statusDiv.textContent = `Status: Error - ${errorMessage}`;
+            statusDiv.className = 'status-error';
+            stopRecognition(); // Ensure state is reset on error
+          };
+
+          recognition.onend = () => {
+            if (isListening) { // If ended unexpectedly while supposed to be listening
+              console.log('Speech recognition ended unexpectedly, restarting...');
+              // You might want to automatically restart or just update status
+              // For now, just update status and buttons if it wasn't stopped manually
+              // recognition.start(); // Uncomment to auto-restart (can be annoying)
+               stopRecognition(); // Reset state if it ends unexpectedly
+            } else {
+               console.log('Speech recognition stopped.');
+            }
+          };
+
+          const startRecognition = () => {
+            if (!isListening) {
+              finalTranscript = transcriptionOutput.value ? transcriptionOutput.value.trim() + ' ' : ''; // Keep existing text
+              try {
+                recognition.start();
+              } catch (e) {
+                 console.error("Error starting recognition:", e);
+                 statusDiv.textContent = 'Status: Error starting - ' + e.message;
+                 statusDiv.className = 'status-error';
+                 startButton.disabled = false;
+                 stopButton.disabled = true;
+              }
+            }
+          };
+
+          const stopRecognition = () => {
+            if (isListening) {
+              recognition.stop();
+              isListening = false;
+              statusDiv.textContent = 'Status: Stopped';
+              statusDiv.className = 'status-idle';
+              startButton.disabled = false;
+              stopButton.disabled = true;
+            }
+          };
+
+          startButton.addEventListener('click', startRecognition);
+          stopButton.addEventListener('click', stopRecognition);
+
+        } else {
+          // Handle browsers that don't support the API
+          statusDiv.textContent = 'Status: Error - Web Speech API not supported in this browser.';
+          statusDiv.className = 'status-error';
+          startButton.disabled = true;
+          stopButton.disabled = true;
+          transcriptionOutput.placeholder = 'Sorry, your browser does not support speech recognition.';
+          alert('Web Speech API is not supported in this browser. Please try Chrome or Edge.');
+        }
+      </script>
+    </body>
+    </html>
